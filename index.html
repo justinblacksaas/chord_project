@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chord Loop Web App</title>
+  <link rel="stylesheet" type="text/css" href="style.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+  <h1>Chord Loop Web App</h1>
+
+  <div id="chord-input">
+  <h2> Relative Keys</h2>
+    <div class="keys">
+      <div class="key" data-key="C">
+        <kbd>C</kbd>
+        <span class="chord">major</span>
+      </div>
+    </div>
+    <h2> Sharp Keys</h2>
+    <div class="keys">
+      <div class="key" data-key="G">
+        <kbd>G</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="D">
+        <kbd>D</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="A">
+        <kbd>A</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="E">
+        <kbd>E</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="B">
+        <kbd>B</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="Fs">
+        <kbd>Fs</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="Cs">
+        <kbd>Cs</kbd>
+        <span class="chord">major</span>
+      </div>
+    </div>
+    <h2> Flat Keys</h2>
+    <div class="keys">
+      <div class="key" data-key="F">
+        <kbd>F</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="Bb">
+        <kbd>Bb</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="Eb">
+        <kbd>Eb</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="Ab">
+        <kbd>Ab</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="Db">
+        <kbd>Db</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="Gb">
+        <kbd>Gb</kbd>
+        <span class="chord">major</span>
+      </div>
+      <div class="key" data-key="Cb">
+        <kbd>Cb</kbd>
+        <span class="chord">major</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="chord-list">
+    <h2>Chord List:</h2>
+    <ul id="chords"></ul>
+  </div>
+
+  <div id="controls">
+    <button id="play">Play</button>
+    <button id="pause">Pause</button>
+    <button id="stop">Stop</button>
+  </div>
+
+  <audio src="sounds/C major.wav" id="audio-C"></audio>
+  <audio src="sounds/G major.wav" id="audio-G"></audio>
+  <audio src="sounds/D major.wav" id="audio-D"></audio>
+  <audio src="sounds/A major.wav" id="audio-A"></audio>
+  <audio src="sounds/E major.wav" id="audio-E"></audio>
+  <audio src="sounds/B major.wav" id="audio-B"></audio>
+  <audio src="sounds/Fs major.wav" id="audio-Fs"></audio>
+  <audio src="sounds/Cs major.wav" id="audio-Cs"></audio>
+  <audio src="sounds/F major.wav" id="audio-F"></audio>
+  <audio src="sounds/Bb major.wav" id="audio-Bb"></audio>
+  <audio src="sounds/Eb major.wav" id="audio-Eb"></audio>
+  <audio src="sounds/Ab major.wav" id="audio-Ab"></audio>
+  <audio src="sounds/Db major.wav" id="audio-Db"></audio>
+  <audio src="sounds/Gb major.wav" id="audio-Gb"></audio>
+  <audio src="sounds/Cb major.wav" id="audio-Cb"></audio>
+
+
+  <script>
+    const keys = document.querySelectorAll('.key');
+    const audioElements = document.querySelectorAll('audio');
+
+    function addChord(event) {
+      const chordText = event.currentTarget.textContent.trim();
+      const chordList = document.getElementById('chords');
+      const existingChords = chordList.lastElementChild;
+
+      if (existingChords) {
+        // If there are existing chords, concatenate the new chord with existing content
+        existingChords.textContent += `, ${chordText}`;
+      } else {
+        // If there are no existing chords, create a new bullet point
+        const newChord = document.createElement('li');
+        newChord.textContent = chordText;
+        chordList.appendChild(newChord);
+      }
+    }
+
+    function playChord (event) {
+      const chordText = event.currentTarget.textContent.replace(' major', '').trim();
+      const key = event.currentTarget.getAttribute('data-key');
+      audioElements.forEach(audio => {
+        if (audio.id === `audio-${key}`) {
+          audio.currentTime = 0;
+          audio.play();
+        }
+      });
+    }
+
+    // keys.forEach(key => console.log(key.textContent.trim()));
+    // keys.forEach(key => key.addEventListener('click', addChord));
+
+    keys.forEach(key => key.addEventListener('click', playChord));
+  </script>
+</body>
+</html>
