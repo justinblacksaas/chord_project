@@ -19,22 +19,32 @@ h2 {
     font-size: 3rem;
 }
   
+.panel {
+    display: inline-block;
+    margin-right: 25rem; /* Added margin for spacing between panels */
+    vertical-align: top; /* Align panels to the top */
+}
+
 .keys {
-    display: flex;
+    display: grid;
     /* flex-wrap: wrap; */
     min-height: 10vh;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-gap: 10px;
     align-items: center;
     justify-content: center;
-    gap: 1rem; /* Added gap property for spacing between keys */
+    gap: 1rem;
+    /* Added gap property for spacing between keys */
 }
-  
+
 .key {
     flex: .1;
     border: .4rem solid black;
     border-radius: .5rem;
-    margin: 0.5rem; /* Adjusted margin for spacing between keys */
+    margin: 0.5rem;
+    /* Adjusted margin for spacing between keys */
     font-size: 1.5rem;
-    padding: 1rem .5rem;
+    padding: 10px;
     transition: all .07s ease;
     text-align: center;
     color: white;
@@ -44,9 +54,9 @@ h2 {
     justify-content: center;
 }
 
+
 kbd {
     display: block;
     user-select: none;
     font-size: 4rem;
 }
-  
