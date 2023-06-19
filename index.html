@@ -8,6 +8,7 @@
   <h1>Chord Loop Web App</h1>
 
   <div id="chord-input">
+  <div class="panel">
   <h2> Relative Keys</h2>
     <div class="keys">
       <div class="key" data-key="C">
@@ -15,6 +16,8 @@
         <span class="chord">major</span>
       </div>
     </div>
+  </div>
+  <div class="panel">
     <h2> Sharp Keys</h2>
     <div class="keys">
       <div class="key" data-key="G">
@@ -46,6 +49,8 @@
         <span class="chord">major</span>
       </div>
     </div>
+  </div>
+  <div class="panel">
     <h2> Flat Keys</h2>
     <div class="keys">
       <div class="key" data-key="F">
@@ -78,16 +83,22 @@
       </div>
     </div>
   </div>
+  </div>    
 
   <div id="chord-list">
     <h2>Chord List:</h2>
     <ul id="chords"></ul>
   </div>
-
+  
+  <label for="duration">Chord Duration (in milliseconds):</label>
+  <input type="number" id="duration" value="500" min="100" step="100">
+  
+  
   <div id="controls">
     <button id="play">Play</button>
     <button id="pause">Pause</button>
     <button id="stop">Stop</button>
+    <button id="clear">Clear Chords</button>
   </div>
 
   <audio src="sounds/C major.wav" id="audio-C"></audio>
@@ -110,6 +121,9 @@
   <script>
     const keys = document.querySelectorAll('.key');
     const audioElements = document.querySelectorAll('audio');
+    let currentChordIndex = 0;
+    let loopInterval;
+    const loopChords = [];
 
     function addChord(event) {
       const chordText = event.currentTarget.textContent.trim();
@@ -117,17 +131,17 @@
       const existingChords = chordList.lastElementChild;
 
       if (existingChords) {
-        // If there are existing chords, concatenate the new chord with existing content
         existingChords.textContent += `, ${chordText}`;
       } else {
-        // If there are no existing chords, create a new bullet point
         const newChord = document.createElement('li');
         newChord.textContent = chordText;
         chordList.appendChild(newChord);
       }
+
+      loopChords.push(chordText);
     }
 
-    function playChord (event) {
+    function playChord(event) {
       const chordText = event.currentTarget.textContent.replace(' major', '').trim();
       const key = event.currentTarget.getAttribute('data-key');
       audioElements.forEach(audio => {
@@ -138,10 +152,49 @@
       });
     }
 
-    // keys.forEach(key => console.log(key.textContent.trim()));
-    // keys.forEach(key => key.addEventListener('click', addChord));
+    function startLoop() {
+      const durationInput = document.getElementById('duration');
+      const duration = parseInt(durationInput.value);
 
+      loopInterval = setInterval(() => {
+        const chordText = loopChords[currentChordIndex];
+        const chordKeys = Array.from(keys);
+        const key = chordKeys.find(key => key.textContent.trim() === chordText).getAttribute('data-key');
+        audioElements.forEach(audio => {
+          if (audio.id === `audio-${key}`) {
+            audio.currentTime = 0;
+            audio.play();
+          }
+        });
+
+        currentChordIndex++;
+        if (currentChordIndex >= loopChords.length) {
+          currentChordIndex = 0;
+        }
+      }, duration);
+
+      durationInput.disabled = true;
+    }
+
+    function stopLoop() {
+      clearInterval(loopInterval);
+      currentChordIndex = 0;
+      const durationInput = document.getElementById('duration');
+      durationInput.disabled = false;
+    }
+
+    function clearChords() {
+      const chordList = document.getElementById('chords');
+      chordList.innerHTML = '';
+      loopChords.length = 0;
+    }
+
+    document.getElementById('play').addEventListener('click', startLoop);
+    document.getElementById('stop').addEventListener('click', stopLoop);
+    document.getElementById('clear').addEventListener('click', clearChords);
+
+    keys.forEach(key => key.addEventListener('click', addChord));
     keys.forEach(key => key.addEventListener('click', playChord));
   </script>
-</body>
+  </body>
 </html>
