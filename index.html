@@ -9,7 +9,6 @@
 
   <div id="chord-input">
   <div class="panel">
-    <h2> Major Chords</h2>
     <div class="keys">
       <div class="key" data-key="A">
         <kbd>A</kbd>
@@ -50,7 +49,6 @@
     </div>
   </div>
   <div class="panel">
-    <h2> Minor Chords</h2>
     <div class="keys">
       <div class="key" data-key="Am">
         <kbd>Am</kbd>
@@ -91,7 +89,6 @@
     </div>
   </div>
   <div class="panel">
-    <h2> Major 7 Chords</h2>
     <div class="keys">
       <div class="key" data-key="A7">
         <kbd>A7</kbd>
@@ -190,6 +187,10 @@
   <audio src="sounds/Ab major 7.wav" id="audio-Ab7"></audio>  
 
   <script>
+    // research data structures to organize chords based on key
+    // use the flex panel lesson for reference
+    // place circle of fifths on page and write guide of ways to use
+    const panels = document.querySelectorAll('.panel');
     const keys = document.querySelectorAll('.key');
     const audioElements = document.querySelectorAll('audio');
     let currentChordIndex = 0;
