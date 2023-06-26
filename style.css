@@ -1,7 +1,5 @@
 html {
     font-size: 10px;
-    background: url('./background.jpg') bottom center;
-    background-size: cover;
 }
   
 body, html {
@@ -18,38 +16,28 @@ h1 {
 h2 {
     font-size: 3rem;
 }
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
   
 .panel {
     display: inline-flex;
     margin-right: 5rem; /* Added margin for spacing between panels */
     margin-bottom: 10rem;
-    /* vertical-align: middle;  */
-    /* display: flex; */
-    /* flex-direction: column; */
 }
 
 .panel > * {
     border: 1px solid red;
-    /* margin: 0;
-    /* width: 100%; */
-    /* transition: transform .5s;
-    flex: 1 0 auto;
-    justify-content: center;
-    align-items: center;
-    display: flex;  */
+    
 }
 
 .keys {
     
-    /* display: grid;
-    flex-wrap: wrap;
-    min-height: 10vh;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    grid-gap: 10px;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    flex: 1; */
 }
 
 .key {
@@ -73,4 +61,14 @@ kbd {
     display: block;
     user-select: none;
     font-size: 4rem;
+}
+
+.circle {
+    background: url('./circle\ of\ fifths.png') no-repeat bottom center;
+    background-size: cover;
+    height: fit-content;
+    width: fit-content;
+    height: 1000px;
+    width: 750px;
+    flex-shrink: 0;
 }
