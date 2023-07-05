@@ -133,22 +133,40 @@
     <div class="circle">
       
     </div>
-  </div>
-  
-  <div id="chord-list">
-    <h2>Chord List:</h2>
-    <ul id="chords"></ul>
-  </div>
-  
-    <label for="duration">Chord Duration (in milliseconds):</label>
-    <input type="number" id="duration" value="500" min="100" step="100">
-    
-    
-  <div id="controls">
-    <button id="play">Play</button>
-    <button id="pause">Pause</button>
-    <button id="stop">Stop</button>
-    <button id="clear">Clear Chords</button>
+
+    <div class="controls" id="chord-list">
+      <h2>Time Signature Selection</h2>
+      <div>
+        <label for="timeSignature">Time Signature:</label>
+        <select id="timeSignature" required>
+          <option value="">Select Time Signature</option>
+          <option value="4/4">4/4</option>
+          <option value="3/4">3/4</option>
+          <option value="6/8">6/8</option>
+        </select>
+      </div>
+      
+      <h2>Number of Bars Selection</h2>
+      <div>
+        <label for="numBars">Number of Bars:</label>
+        <input type="number" id="numBars" min="1" required>
+      </div>
+      
+      <h2>Chord Selection for Duration</h2>
+      <div class="bars"></div>
+      
+      <button id="toggleButton" type="button">Add Chords to Loop</button>
+
+      <h2>Loop list</h2>
+      <div id="list"><ul id="chords"></ul></div>
+
+      <div>
+        <button id="play">Play</button>
+        <button id="pause">Pause</button>
+        <button id="stop">Stop</button>
+        <button id="clear">Clear Chords</button>
+      </div>
+    </div>  
   </div>
 
 <!-- next step: create placeholders for minor and major 7 chord. remove text in keys -->
@@ -201,6 +219,7 @@
     let currentChordIndex = 0;
     let loopInterval;
     const loopChords = [];
+    let isListening = true;
 
     function addChord(event) {
       const chordText = event.currentTarget.textContent.trim();
@@ -214,8 +233,8 @@
         newChord.textContent = chordText;
         chordList.appendChild(newChord);
       }
-
       loopChords.push(chordText);
+
     }
 
     function playChord(event) {
@@ -230,11 +249,13 @@
     }
 
     function startLoop() {
-      const durationInput = document.getElementById('duration');
-      const duration = parseInt(durationInput.value);
+      const numBarsInput = document.getElementById('numBars');
+      const numBars = parseInt(numBarsInput.value);
+      const duration = 1000 * numBars;  
 
       loopInterval = setInterval(() => {
         const chordText = loopChords[currentChordIndex];
+        console.log(chordText);
         const chordKeys = Array.from(keys);
         const key = chordKeys.find(key => key.textContent.trim() === chordText).getAttribute('data-key');
         audioElements.forEach(audio => {
@@ -249,15 +270,11 @@
           currentChordIndex = 0;
         }
       }, duration);
-
-      durationInput.disabled = true;
-    }
+    };
 
     function stopLoop() {
       clearInterval(loopInterval);
       currentChordIndex = 0;
-      const durationInput = document.getElementById('duration');
-      durationInput.disabled = false;
     }
 
     function clearChords() {
@@ -266,11 +283,26 @@
       loopChords.length = 0;
     }
 
+    function toggleMode() {
+      const toggleButton = document.getElementById('toggleButton');
+      if (isListening) {
+        toggleButton.textContent = 'Add Chords to Loop';
+      } else {
+        toggleButton.textContent = 'Listen Only';
+      }
+      isListening = !isListening;
+    }
+
+    document.getElementById('toggleButton').addEventListener('click', toggleMode);
     document.getElementById('play').addEventListener('click', startLoop);
     document.getElementById('stop').addEventListener('click', stopLoop);
     document.getElementById('clear').addEventListener('click', clearChords);
 
-    keys.forEach(key => key.addEventListener('click', addChord));
+    keys.forEach(key => key.addEventListener('click', event => {
+      if (isListening) {
+        addChord(event);
+      }
+    }));
     keys.forEach(key => key.addEventListener('click', playChord));
   </script>
   </body>

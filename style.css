@@ -72,3 +72,8 @@ kbd {
     width: 750px;
     flex-shrink: 0;
 }
+
+.controls {
+    display: inline-block;
+    gap: 2rem;
+}
